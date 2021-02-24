@@ -17,6 +17,7 @@ import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.Kube
 import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.KubernetesObjectUtil.shouldCreateInCheNamespace;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -157,7 +158,7 @@ public class CheNamespace {
           .configMaps()
           .inNamespace(cheNamespaceName)
           .withLabel(CHE_WORKSPACE_ID_LABEL, workspaceId)
-          .withPropagationPolicy("Background")
+          .withPropagationPolicy(DeletionPropagation.BACKGROUND)
           .delete();
     } catch (KubernetesClientException e) {
       throw new KubernetesInfrastructureException(e);

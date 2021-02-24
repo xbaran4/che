@@ -23,17 +23,8 @@ import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.Kube
 import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.KubernetesObjectUtil.setSelector;
 
 import com.google.common.base.Strings;
-import io.fabric8.kubernetes.api.model.ContainerStateTerminated;
-import io.fabric8.kubernetes.api.model.ContainerStateWaiting;
-import io.fabric8.kubernetes.api.model.ContainerStatus;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.OwnerReference;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodSpec;
-import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentBuilder;
 import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
@@ -957,7 +948,8 @@ public class KubernetesDeployments {
         toCloseOnException = watch;
       }
 
-      Boolean deleteSucceeded = deploymentResource.withPropagationPolicy("Background").delete();
+      Boolean deleteSucceeded =
+          deploymentResource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
 
       if (deleteSucceeded == null || !deleteSucceeded) {
         deleteFuture.complete(null);
@@ -995,7 +987,8 @@ public class KubernetesDeployments {
       final Watch watch = podResource.watch(new DeleteWatcher<Pod>(deleteFuture));
       toCloseOnException = watch;
 
-      Boolean deleteSucceeded = podResource.withPropagationPolicy("Background").delete();
+      Boolean deleteSucceeded =
+          podResource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
       if (deleteSucceeded == null || !deleteSucceeded) {
         deleteFuture.complete(null);
       }

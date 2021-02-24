@@ -16,6 +16,7 @@ import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.pvc.
 import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.pvc.EphemeralWorkspaceUtility.isEphemeral;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.provision.AsyncStorageProvisioner.ASYNC_STORAGE;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.DoneablePod;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
@@ -123,7 +124,8 @@ public class AsyncStoragePodInterceptor {
       final Watch watch = resource.watch(new DeleteWatcher<>(deleteFuture));
       toCloseOnException = watch;
 
-      Boolean deleteSucceeded = resource.withPropagationPolicy("Background").delete();
+      Boolean deleteSucceeded =
+          resource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
       if (deleteSucceeded == null || !deleteSucceeded) {
         deleteFuture.complete(null);
       }
@@ -177,7 +179,8 @@ public class AsyncStoragePodInterceptor {
       final Watch watch = podResource.watch(new DeleteWatcher<>(deleteFuture));
       toCloseOnException = watch;
 
-      Boolean deleteSucceeded = podResource.withPropagationPolicy("Background").delete();
+      Boolean deleteSucceeded =
+          podResource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
       if (deleteSucceeded == null || !deleteSucceeded) {
         deleteFuture.complete(null);
       }

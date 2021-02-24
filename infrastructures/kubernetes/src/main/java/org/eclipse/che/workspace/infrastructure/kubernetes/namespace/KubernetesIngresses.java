@@ -14,6 +14,7 @@ package org.eclipse.che.workspace.infrastructure.kubernetes.namespace;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.Constants.CHE_WORKSPACE_ID_LABEL;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.KubernetesObjectUtil.putLabel;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.extensions.DoneableIngress;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -144,7 +145,7 @@ public class KubernetesIngresses {
           .ingresses()
           .inNamespace(namespace)
           .withLabel(CHE_WORKSPACE_ID_LABEL, workspaceId)
-          .withPropagationPolicy("Background")
+          .withPropagationPolicy(DeletionPropagation.BACKGROUND)
           .delete();
     } catch (KubernetesClientException e) {
       throw new KubernetesInfrastructureException(e);

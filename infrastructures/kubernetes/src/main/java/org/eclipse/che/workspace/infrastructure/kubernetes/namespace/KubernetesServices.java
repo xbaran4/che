@@ -15,6 +15,7 @@ import static org.eclipse.che.workspace.infrastructure.kubernetes.Constants.CHE_
 import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.KubernetesObjectUtil.putLabel;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.namespace.KubernetesObjectUtil.putSelector;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import java.util.List;
@@ -87,7 +88,7 @@ public class KubernetesServices {
           .services()
           .inNamespace(namespace)
           .withLabel(CHE_WORKSPACE_ID_LABEL, workspaceId)
-          .withPropagationPolicy("Background")
+          .withPropagationPolicy(DeletionPropagation.BACKGROUND)
           .delete();
     } catch (KubernetesClientException e) {
       throw new KubernetesInfrastructureException(e);

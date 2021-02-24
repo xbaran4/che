@@ -13,6 +13,7 @@ package org.eclipse.che.workspace.infrastructure.kubernetes.namespace;
 
 import static java.util.stream.Collectors.toSet;
 
+import io.fabric8.kubernetes.api.model.DeletionPropagation;
 import io.fabric8.kubernetes.api.model.DoneablePersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
@@ -151,7 +152,7 @@ public class KubernetesPersistentVolumeClaims {
           .persistentVolumeClaims()
           .inNamespace(namespace)
           .withLabels(labels)
-          .withPropagationPolicy("Background")
+          .withPropagationPolicy(DeletionPropagation.BACKGROUND)
           .delete();
     } catch (KubernetesClientException e) {
       throw new KubernetesInfrastructureException(e);
