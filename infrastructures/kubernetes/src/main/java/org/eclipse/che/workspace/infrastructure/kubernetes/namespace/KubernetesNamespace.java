@@ -14,15 +14,7 @@ package org.eclipse.che.workspace.infrastructure.kubernetes.namespace;
 import static java.lang.String.format;
 
 import com.google.common.annotations.VisibleForTesting;
-import io.fabric8.kubernetes.api.model.ConfigMap;
-import io.fabric8.kubernetes.api.model.DoneableServiceAccount;
-import io.fabric8.kubernetes.api.model.Namespace;
-import io.fabric8.kubernetes.api.model.NamespaceBuilder;
-import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.Secret;
-import io.fabric8.kubernetes.api.model.Service;
-import io.fabric8.kubernetes.api.model.ServiceAccount;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.extensions.Ingress;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
@@ -329,7 +321,7 @@ public class KubernetesNamespace {
   private void delete(String namespaceName, KubernetesClient client)
       throws InfrastructureException {
     try {
-      client.namespaces().withName(namespaceName).withPropagationPolicy("Background").delete();
+      client.namespaces().withName(namespaceName).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
     } catch (KubernetesClientException e) {
       if (e.getCode() == 404) {
         LOG.warn(
