@@ -13,7 +13,6 @@ package org.eclipse.che.workspace.infrastructure.kubernetes.namespace;
 
 import static org.eclipse.che.workspace.infrastructure.kubernetes.Constants.CHE_WORKSPACE_ID_LABEL;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,7 +23,6 @@ import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -59,9 +57,7 @@ public class KubernetesSecretsTest {
           Secret, SecretList, DoneableSecret, Resource<Secret, DoneableSecret>>
       nonNamespaceOperation;
 
-  @Mock
-  private FilterWatchListDeletable<Secret, SecretList, Boolean, Watch, Watcher<Secret>>
-      deletableList;
+  @Mock private FilterWatchListDeletable<Secret, SecretList, Boolean, Watch> deletableList;
 
   private KubernetesSecrets kubernetesSecrets;
 
@@ -74,7 +70,7 @@ public class KubernetesSecretsTest {
     when(client.secrets()).thenReturn(secretsMixedOperation);
     lenient().when(secretsMixedOperation.inNamespace(any())).thenReturn(nonNamespaceOperation);
     lenient().when(nonNamespaceOperation.withLabel(any(), any())).thenReturn(deletableList);
-    lenient().doReturn(deletableList).when(deletableList).withPropagationPolicy(eq("Background"));
+    lenient().doReturn(deletableList).when(deletableList);
   }
 
   @Test

@@ -87,7 +87,6 @@ public class KubernetesServices {
           .services()
           .inNamespace(namespace)
           .withLabel(CHE_WORKSPACE_ID_LABEL, workspaceId)
-          .withPropagationPolicy("Background")
           .delete();
     } catch (KubernetesClientException e) {
       throw new KubernetesInfrastructureException(e);

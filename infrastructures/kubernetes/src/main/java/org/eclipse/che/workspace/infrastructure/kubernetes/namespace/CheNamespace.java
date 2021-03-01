@@ -157,7 +157,6 @@ public class CheNamespace {
           .configMaps()
           .inNamespace(cheNamespaceName)
           .withLabel(CHE_WORKSPACE_ID_LABEL, workspaceId)
-          .withPropagationPolicy("Background")
           .delete();
     } catch (KubernetesClientException e) {
       throw new KubernetesInfrastructureException(e);

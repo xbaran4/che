@@ -34,18 +34,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 import com.google.common.collect.ImmutableMap;
-import io.fabric8.kubernetes.api.model.ContainerStateBuilder;
-import io.fabric8.kubernetes.api.model.ContainerStatus;
-import io.fabric8.kubernetes.api.model.DoneableEvent;
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.Event;
-import io.fabric8.kubernetes.api.model.EventList;
-import io.fabric8.kubernetes.api.model.LabelSelector;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.ObjectReference;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
-import io.fabric8.kubernetes.api.model.PodStatus;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentSpec;
@@ -488,7 +477,9 @@ public class KubernetesDeploymentsTest {
     doReturn(POD_NAME).when(metadata).getName();
 
     doReturn(Boolean.FALSE).when(podResource).delete();
-    doReturn(podResource).when(podResource).withPropagationPolicy(eq("Background"));
+    doReturn(podResource)
+        .when(podResource)
+        .withPropagationPolicy(eq(DeletionPropagation.BACKGROUND));
     Watch watch = mock(Watch.class);
     doReturn(watch).when(podResource).watch(any());
 
@@ -503,7 +494,9 @@ public class KubernetesDeploymentsTest {
   public void testDeletePodThrowingKubernetesClientExceptionShouldCloseWatch() throws Exception {
     final String POD_NAME = "nonExistingPod";
     doReturn(POD_NAME).when(metadata).getName();
-    doReturn(podResource).when(podResource).withPropagationPolicy(eq("Background"));
+    doReturn(podResource)
+        .when(podResource)
+        .withPropagationPolicy(eq(DeletionPropagation.BACKGROUND));
     doThrow(KubernetesClientException.class).when(podResource).delete();
     Watch watch = mock(Watch.class);
     doReturn(watch).when(podResource).watch(any());
@@ -524,8 +517,12 @@ public class KubernetesDeploymentsTest {
   public void testDeleteNonExistingDeploymentBeforeWatch() throws Exception {
     final String DEPLOYMENT_NAME = "nonExistingPod";
     doReturn(DEPLOYMENT_NAME).when(deploymentMetadata).getName();
-    doReturn(podResource).when(podResource).withPropagationPolicy(eq("Background"));
-    doReturn(deploymentResource).when(deploymentResource).withPropagationPolicy(eq("Background"));
+    doReturn(podResource)
+        .when(podResource)
+        .withPropagationPolicy(eq(DeletionPropagation.BACKGROUND));
+    doReturn(deploymentResource)
+        .when(deploymentResource)
+        .withPropagationPolicy(eq(DeletionPropagation.BACKGROUND));
     doReturn(Boolean.FALSE).when(deploymentResource).delete();
     Watch watch = mock(Watch.class);
     doReturn(watch).when(podResource).watch(any());
@@ -544,7 +541,9 @@ public class KubernetesDeploymentsTest {
     doReturn(DEPLOYMENT_NAME).when(deploymentMetadata).getName();
 
     doThrow(KubernetesClientException.class).when(deploymentResource).delete();
-    doReturn(deploymentResource).when(deploymentResource).withPropagationPolicy(eq("Background"));
+    doReturn(deploymentResource)
+        .when(deploymentResource)
+        .withPropagationPolicy(eq(DeletionPropagation.BACKGROUND));
     Watch watch = mock(Watch.class);
     doReturn(watch).when(podResource).watch(any());
 

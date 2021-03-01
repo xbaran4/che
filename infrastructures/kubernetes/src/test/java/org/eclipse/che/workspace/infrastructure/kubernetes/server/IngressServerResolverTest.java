@@ -299,8 +299,9 @@ public class IngressServerResolverTest {
                 new HTTPIngressRuleValue(
                     singletonList(
                         new HTTPIngressPath(
-                            new IngressBackend(name, new IntOrString("8080")),
-                            INGRESS_PATH_PREFIX)))))
+                            new IngressBackend(null, name, new IntOrString("8080")),
+                            INGRESS_PATH_PREFIX,
+                            null)))))
         .endSpec()
         .withNewStatus()
         .withNewLoadBalancer()

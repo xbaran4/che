@@ -124,7 +124,8 @@ public class AsyncStoragePodInterceptor {
       final Watch watch = resource.watch(new DeleteWatcher<>(deleteFuture));
       toCloseOnException = watch;
 
-      Boolean deleteSucceeded = resource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+      Boolean deleteSucceeded =
+          resource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
       if (deleteSucceeded == null || !deleteSucceeded) {
         deleteFuture.complete(null);
       }
@@ -178,7 +179,8 @@ public class AsyncStoragePodInterceptor {
       final Watch watch = podResource.watch(new DeleteWatcher<>(deleteFuture));
       toCloseOnException = watch;
 
-      Boolean deleteSucceeded = podResource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
+      Boolean deleteSucceeded =
+          podResource.withPropagationPolicy(DeletionPropagation.BACKGROUND).delete();
       if (deleteSucceeded == null || !deleteSucceeded) {
         deleteFuture.complete(null);
       }

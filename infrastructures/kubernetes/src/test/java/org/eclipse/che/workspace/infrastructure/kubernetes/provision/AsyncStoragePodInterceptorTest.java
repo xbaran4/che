@@ -24,15 +24,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableMap;
-import io.fabric8.kubernetes.api.model.DoneablePod;
-import io.fabric8.kubernetes.api.model.ObjectMeta;
-import io.fabric8.kubernetes.api.model.Pod;
-import io.fabric8.kubernetes.api.model.PodList;
+import io.fabric8.kubernetes.api.model.*;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DoneableDeployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
@@ -66,7 +62,7 @@ public class AsyncStoragePodInterceptorTest {
   @Mock private MixedOperation mixedOperationPod;
   @Mock private NonNamespaceOperation namespaceOperation;
   @Mock private NonNamespaceOperation namespacePodOperation;
-  @Mock private FilterWatchListDeletable<Pod, PodList, Boolean, Watch, Watcher<Pod>> deletable;
+  @Mock private FilterWatchListDeletable<Pod, PodList, Boolean, Watch> deletable;
   @Mock private AppsAPIGroupDSL apps;
 
   private AsyncStoragePodInterceptor asyncStoragePodInterceptor;
@@ -156,7 +152,8 @@ public class AsyncStoragePodInterceptorTest {
     deployment.setMetadata(meta);
 
     when(deploymentResource.get()).thenReturn(deployment);
-    when(deploymentResource.withPropagationPolicy("Background")).thenReturn(deletable);
+    when(deploymentResource.withPropagationPolicy(DeletionPropagation.BACKGROUND))
+        .thenReturn(deletable);
 
     Watch watch = mock(Watch.class);
     when(deploymentResource.watch(any())).thenReturn(watch);
@@ -192,7 +189,8 @@ public class AsyncStoragePodInterceptorTest {
     deployment.setMetadata(meta);
 
     when(deploymentResource.get()).thenReturn(deployment);
-    when(deploymentResource.withPropagationPolicy("Background")).thenReturn(deletable);
+    when(deploymentResource.withPropagationPolicy(DeletionPropagation.BACKGROUND))
+        .thenReturn(deletable);
 
     Watch watch = mock(Watch.class);
     when(deploymentResource.watch(any())).thenReturn(watch);

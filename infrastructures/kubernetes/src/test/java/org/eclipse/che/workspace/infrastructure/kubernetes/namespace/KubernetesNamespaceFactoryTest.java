@@ -47,7 +47,6 @@ import io.fabric8.kubernetes.api.model.rbac.RoleList;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
-import io.fabric8.kubernetes.client.Watcher;
 import io.fabric8.kubernetes.client.dsl.FilterWatchListDeletable;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -121,8 +120,7 @@ public class KubernetesNamespaceFactoryTest {
   private KubernetesNamespaceFactory namespaceFactory;
 
   @Mock
-  private FilterWatchListDeletable<Namespace, NamespaceList, Boolean, Watch, Watcher<Namespace>>
-      namespaceListResource;
+  private FilterWatchListDeletable<Namespace, NamespaceList, Boolean, Watch> namespaceListResource;
 
   @Mock private NamespaceList namespaceList;
 

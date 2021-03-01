@@ -244,8 +244,7 @@ public class CheNamespaceTest {
     when(kubeConfigMaps.inNamespace(CHE_NAMESPACE)).thenReturn(kubeConfigMapsInNamespace);
     when(kubeConfigMapsInNamespace.withLabel(CHE_WORKSPACE_ID_LABEL, WORKSPACE_ID))
         .thenReturn(kubeConfigMapsWithLabel);
-    when(kubeConfigMapsWithLabel.withPropagationPolicy("Background"))
-        .thenReturn(kubeConfigMapsWithPropagationPolicy);
+    when(kubeConfigMapsWithLabel).thenReturn(kubeConfigMapsWithPropagationPolicy);
 
     // when
     cheNamespace.cleanUp(WORKSPACE_ID);
